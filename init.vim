@@ -1,7 +1,9 @@
+set nocompatible
+
 call plug#begin("~/.vim/plugged")
   " Theme
   Plug 'dracula/vim'
-
+  Plug 'phanviet/vim-monokai-pro'
   " Language Client
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -10,11 +12,16 @@ call plug#begin("~/.vim/plugged")
   Plug 'peitalin/vim-jsx-typescript'
   Plug 'mxw/vim-jsx'
   Plug 'pangloss/vim-javascript' 
-
+  
+  "highlight
+  Plug 'sheerun/vim-polyglot'
+  
   " File Explorer with Icons
   Plug 'scrooloose/nerdtree'
   Plug 'ryanoasis/vim-devicons'
-
+  Plug 'https://github.com/ryanoasis/vim-devicons'
+  Plug 'https://github.com/adelarsq/vim-devicons-emoji' 
+  
   " File Search
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'ctrlpvim/ctrlp.vim'
@@ -37,10 +44,7 @@ call plug#begin("~/.vim/plugged")
 	Plug 'xolox/vim-session'
 	Plug 'xolox/vim-misc'
 
-  
-  " JavaScript support
-  Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-  Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+   " JavaScript support
   Plug 'othree/jspc.vim'
   Plug 'maksimr/vim-jsbeautify'
   
@@ -57,13 +61,24 @@ call plug#begin("~/.vim/plugged")
   
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
-call plug#end()
+  call plug#end()
 
+" Theme
+syntax enable
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+
+"monokai pro settings
+set termguicolors
+colorscheme monokai_pro
 
 "airlline
 " --- Statusbar ---
 " Airline settings
-let g:airline_theme                       = 'atomic'
+
+let g:airline_theme="jellybeans"
 let g:airline_powerline_fonts             = 1
 let g:airline#extensions#tabline#enabled  = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -100,32 +115,8 @@ let g:deoplete#enable_at_startup = 1
 " CtrlP settings
 let g:ctrlp_map                 = '<C-p>'
 let g:ctrlp_cmd                 = 'CtrlP'
-let g:ctrlp_working_path_mode   = 'ra'
+"let g:ctrlp_working_path_mode   = 'rc'
 let g:ctrlp_custom_ignore       = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_match_window        = 'bottom,order:btt,min:1,max:10,results:85'
-let g:ctrlp_show_hidden         = 1
-let g:ctrlp_follow_symlinks     = 1
-let g:ctrlp_open_multiple_files = '0i'
-let g:ctrlp_prompt_mappings     = {
-	\ 'PrtHistory(1)'        : [''],
-	\ 'PrtHistory(-1)'       : [''],
-	\ 'ToggleType(1)'        : ['<C-l>', '<C-up>'],
-	\ 'ToggleType(-1)'       : ['<C-h>', '<C-down>'],
-	\ 'PrtCurLeft()'         : ['<C-b>', '<Left>'],
-	\ 'PrtCurRight()'        : ['<C-f>', '<Right>'],
-	\ 'PrtBS()'              : ['<C-s>', '<BS>'],
-	\ 'PrtDelete()'          : ['<C-d>', '<DEL>'],
-	\ 'PrtDeleteWord()'      : ['<C-w>'],
-	\ 'PrtClear()'           : ['<C-u>'],
-	\ 'ToggleByFname()'      : ['<C-g>'],
-	\ 'AcceptSelection("e")' : ['<C-m>', '<CR>'],
-	\ 'AcceptSelection("h")' : ['<C-x>'],
-	\ 'AcceptSelection("t")' : ['<C-t>'],
-	\ 'AcceptSelection("v")' : ['<C-v>'],
-	\ 'OpenMulti()'          : ['<C-o>'],
-	\ 'MarkToOpen()'         : ['<c-z>'],
-	\ 'PrtExit()'            : ['<esc>', '<c-c>', '<c-p>'],
-	\ }
 
 "emmet
 let g:user_emmet_expandabbr_key = '<C-a>,'
@@ -134,6 +125,9 @@ let g:user_emmet_expandabbr_key = '<C-a>,'
 if (has("termguicolors"))
  set termguicolors
 endif
+
+"enable encoding
+set encoding=UTF-8
 
 " CSS3 settings
 augroup VimCSS3Syntax
@@ -145,10 +139,6 @@ augroup END
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow  = 1
-
-" Tern_for_vim settings
-let g:tern#command   = ['tern']
-let g:tern#arguments = ['--persistent']
 
 " JS-Beautify
 let g:config_Beautifier = {}
@@ -203,16 +193,15 @@ if has("nvim")
 endif
 
 " Closetag settings
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml,*.html.erb'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml,*.html.erb,*.js,*.jsx'
 
-" Theme
-syntax enable
-colorscheme dracula
-let g:airline_theme="dracula"
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeIgnore = []
-let g:NERDTreeStatusline = ''
+"Prettier
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+let g:prettier#quickfix_enabled = 0
+
+
+
 " Automaticaly close nvim if NERDTree is only thing left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Toggle
@@ -241,6 +230,8 @@ set nowritebackup
 set noswapfile
 set nobackup
 set ruler
+
+
 " turn terminal to normal mode with escape
 tnoremap <Esc> <C-\><C-n>
 
@@ -260,6 +251,13 @@ nnoremap <C-H> <C-W><C-H>
 noremap Y "*y
 inoremap <C-c> <Esc>
 nnoremap <CR> :noh<CR><CR>
+
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
 imap <C-s> :w
   let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
 " start terminal in insert mode

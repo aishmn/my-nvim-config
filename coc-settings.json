@@ -16,5 +16,6 @@
   ],
   "coc.preferences.diagnostic.virtualText": true,
   "coc.source.emoji.filetypes": ["markdown"],
-  "coc.source.emoji.triggerCharacters": ["TRIGGERCHAR"]
+  "coc.source.emoji.triggerCharacters": ["TRIGGERCHAR"],
+  "typescript.suggest.autoImports": true
 }
